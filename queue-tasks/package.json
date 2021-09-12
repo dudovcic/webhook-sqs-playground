@@ -6,7 +6,7 @@
   "scripts": {
     "start": "yarn build && sleep 1 && npm-run-all -p watch serve",
     "build": "yarn clean && tsc --build",
-    "clean": "rm -rf build && rm tsconfig.tsbuildinfo",
+    "clean": "rm -rf build && rm -rf tsconfig.tsbuildinfo",
     "watch": "tsc --build -w",
     "serve": "nodemon ./build/index.js"
   },
