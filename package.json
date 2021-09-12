@@ -1,14 +1,13 @@
 {
-  "name": "datahog",
+  "name": "bills",
   "version": "1.0.0",
-  "description": "Mock APIs",
   "main": "index.js",
+  "author": "Denis Udovcic <denisudovcic@gmail.com>",
+  "license": "MIT",
   "scripts": {
-    "start": "node ./src/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc --build"
   },
-  "license": "ISC",
-  "dependencies": {
-    "express": "^4.17.1"
+  "devDependencies": {
+    "typescript": "^4.4.3"
   }
 }
