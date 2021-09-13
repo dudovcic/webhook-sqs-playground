@@ -2,7 +2,7 @@ import { UnauthTypedRequest } from '../../middleware/request-middleware';
 import { IServices } from '../../services';
 import { validateBillsPayload } from '../utils/bills-utils';
 import { badRequest, internal } from '../../errors/error-response';
-import { IBillsCallbackPayload } from './types.ts/requests';
+import { IBillsCallbackPayload } from './types/requests';
 import { IApiResponse } from '../../types/response';
 
 export default class BillsController {

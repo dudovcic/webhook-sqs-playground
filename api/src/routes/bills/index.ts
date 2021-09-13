@@ -2,7 +2,7 @@ import { Router } from "express";
 import BillsController from "./bills.controller";
 import { UnauthorisedRouteHandlerBuilder } from "../utils/route-utils";
 import { IServices } from "../../services";
-import { IBillsCallbackPayload } from "./types.ts/requests";
+import { IBillsCallbackPayload } from "./types/requests";
 
 const billsController = (c: config.IConfig, s: IServices): BillsController =>
   new BillsController(c, s);

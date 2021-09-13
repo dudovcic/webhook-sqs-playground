@@ -1,4 +1,4 @@
-import { IBillsCallbackPayload } from '../bills/types.ts/requests';
+import { IBillsCallbackPayload } from '../bills/types/requests';
 
 
 export const validateBillsPayload = (
