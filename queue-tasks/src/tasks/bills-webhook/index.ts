@@ -12,7 +12,7 @@ interface BillsWebhookMessagePayload {
 export class BillsWebhookTask {
   private app: Consumer;
 
-  constructor(queueUrl: string, batchSize?: number) {
+  constructor(private queueUrl: string, batchSize?: number) {
     this.app = Consumer.create({
       queueUrl: queueUrl,
       batchSize,
@@ -48,7 +48,7 @@ export class BillsWebhookTask {
       );
     } else {
       await enqueueSQSMessage(
-        "https://sqs.eu-west-2.amazonaws.com/334964088068/bills-queue",
+        this.queueUrl,
         payload,
         QUEUE_RETRY_DELAY
       );
