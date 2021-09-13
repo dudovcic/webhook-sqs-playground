@@ -32,7 +32,7 @@ export class BillsWebhookTask {
 
     if (result.statusCode === 200) {
       // webhook
-      retry(
+      await retry(
         async () => {
           const res = await postRequest(
             payload.callbackUrl,

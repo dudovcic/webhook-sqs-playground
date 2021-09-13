@@ -8,6 +8,7 @@
     "build": "tsc --build"
   },
   "devDependencies": {
+    "@types/jest": "^27.0.1",
     "typescript": "^4.4.3"
   }
 }
