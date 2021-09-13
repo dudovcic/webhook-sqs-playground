@@ -27,7 +27,7 @@ export class BillsWebhookTask {
     const payload = JSON.parse(message.Body!) as BillsWebhookMessagePayload;
 
     const result = await getRequest(
-      `http://localhost:3000/providers/${payload.provider}`
+      `http://datahog:3000/providers/${payload.provider}`
     );
 
     if (result.statusCode === 200) {

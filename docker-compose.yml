@@ -1,0 +1,56 @@
+version: '3'
+services:
+  callback-api:
+    build:
+      context: ./
+      dockerfile: ./callback-api/Dockerfile
+      args:
+        BUILD: 0
+    command: yarn start
+    ports:
+      - "3003:3003"
+    volumes:
+     - ./callback-api/public:/home/queue-tasks/public
+    cpu_percent: 20
+  datahog:
+    build:
+      context: ./
+      dockerfile: ./datahog/Dockerfile
+      args:
+        BUILD: 0
+    command: yarn start
+    volumes:
+     - ./datahog/public:/home/datahog/public
+    cpu_percent: 20
+    ports:
+      - "3000:3000"
+  api:
+    build:
+      context: ./
+      dockerfile: ./api/Dockerfile
+      args:
+        BUILD: 0
+    command: yarn start
+    volumes:
+     - ./api/public:/home/api/public
+    ports:
+     - "4000:4000"
+    environment:
+     - NODE_ENV=dev
+     - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+     - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    cpu_percent: 20
+  queue-tasks:
+    build:
+      context: ./
+      dockerfile: ./queue-tasks/Dockerfile
+      args:
+        BUILD: 0
+    command: yarn start
+    volumes:
+     - ./queue-tasks/public:/home/queue-tasks/public
+    environment:
+      - NODE_ENV=dev
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    cpu_percent: 20
