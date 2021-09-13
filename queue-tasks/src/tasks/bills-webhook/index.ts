@@ -1,7 +1,11 @@
 import { Consumer, SQSMessage } from "sqs-consumer";
+import { getRequest, postRequest } from "../../utils/request";
+import { enqueueSQSMessage } from "../../utils/sqs";
+import { retry } from "../../utils/retry";
 
+const QUEUE_RETRY_DELAY = 5 * 60;
 interface BillsWebhookMessagePayload {
-  provier: "gas" | "internet";
+  provider: "gas" | "internet";
   callbackurl: string;
 }
 
@@ -22,7 +26,33 @@ export class BillsWebhookTask {
   private async handler(message: SQSMessage) {
     const payload = JSON.parse(message.Body!) as BillsWebhookMessagePayload;
 
-    payload;
+    const result = await getRequest(
+      `http://localhost:3000/providers/${payload.provider}`
+    );
+
+    if (result.statusCode === 200) {
+      // webhook
+      retry(
+        async () => {
+          const res = await postRequest(
+            payload.callbackurl,
+            JSON.stringify(result.body)
+          );
+          //   normally no need to retry 400
+          if (res.statusCode !== 200 && res.statusCode !== 400) {
+            throw new Error("Error on webhook");
+          }
+        },
+        3,
+        5
+      );
+    } else {
+      await enqueueSQSMessage(
+        "https://sqs.eu-west-2.amazonaws.com/334964088068/bills-queue",
+        payload,
+        QUEUE_RETRY_DELAY
+      );
+    }
   }
 
   private onError(err: Error) {

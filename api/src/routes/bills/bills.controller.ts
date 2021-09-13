@@ -13,7 +13,7 @@ export default class BillsController {
 
   public handleBillsWebhookSubscription = async (
     req: UnauthTypedRequest<void, IBillsCallbackPayload, void>
-  ): IApiResponse<string> => {
+  ): IApiResponse<{ success: boolean; }> => {
     const payload = req.body;
 
     const validationErrors = validateBillsPayload(payload);
@@ -21,12 +21,17 @@ export default class BillsController {
       return badRequest('ValidationError', validationErrors);
     }
 
-    const results = await this.services.bills.getProviderData(payload.provider);
-
-    if (results) {
-      return results;
+    try {
+      await this.services.sqs.enqueueSQSMessage('https://sqs.eu-west-2.amazonaws.com/334964088068/bills-queue',{
+        provider: payload.provider,
+        callbackUrl: payload.callbackUrl,
+      });
+    } catch (e) {
+      return internal('Internal error')
     }
 
-    return internal('Something went wrong');
+    return {
+      success: true,
+    };
   };
 }

@@ -14,7 +14,7 @@ export const routes = (
 ): Router => {
   billsRouter.post(
     "/",
-    unauthRequest<void, IBillsCallbackPayload, void, string, BillsController>(
+    unauthRequest<void, IBillsCallbackPayload, void, { success: boolean }, BillsController>(
       billsController,
       (c: BillsController) => c.handleBillsWebhookSubscription
     )
