@@ -15,8 +15,6 @@ export async function retry(
     if (retries > 0) {
       await pause(backoff);
       await retry(action, retries - 1, backoff * 2);
-    } else {
-      throw err;
     }
   }
 }
