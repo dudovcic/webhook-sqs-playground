@@ -6,7 +6,7 @@ import { retry } from "../../utils/retry";
 const QUEUE_RETRY_DELAY = 5 * 60;
 interface BillsWebhookMessagePayload {
   provider: "gas" | "internet";
-  callbackurl: string;
+  callbackUrl: string;
 }
 
 export class BillsWebhookTask {
@@ -35,7 +35,7 @@ export class BillsWebhookTask {
       retry(
         async () => {
           const res = await postRequest(
-            payload.callbackurl,
+            payload.callbackUrl,
             JSON.stringify(result.body)
           );
           //   normally no need to retry 400
