@@ -18,9 +18,9 @@ export const postRequest = (
   return new Promise((resolve, reject) => {
     return request.post(url, { body }, (err, res) => {
       if (err) {
-        reject(err);
+        return reject(err);
       }
-      resolve(res.toJSON());
+      resolve(res.body);
     });
   });
 };
